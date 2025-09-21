@@ -101,7 +101,7 @@
   #s4{ background: radial-gradient(140% 100% at 50% 0%, #fff5f8 0%, #ffe1ea 50%, #fecdd6 100%); }
   #s5{ background: radial-gradient(140% 100% at 50% 0%, #fff5f7 0%, #ffe0ea 50%, #fecbd6 100%); }
 
-  /* Floating hearts overlay for every section */
+  /* Floating hearts overlay for every section (SVG elements) */
   .hearts{
     position: absolute;
     inset: 0;
@@ -109,38 +109,26 @@
     z-index: 1;
     overflow: hidden;
   }
-  .heart{
+  /* SVG heart element */
+  svg.heart{
     position: absolute;
     bottom: -12vh;
     left: var(--left, 50%);
     width: var(--size, 14px);
     height: var(--size, 14px);
-    transform: translateY(0) rotate(-45deg) scale(var(--scale, 1));
+    transform: translateY(0) rotate(-25deg) scale(var(--scale, 1));
     transform-origin: center;
-    animation: rise var(--dur, 10s) linear infinite;
-    animation-delay: var(--delay, 0s);
+    animation: rise var(--dur, 10s) linear infinite var(--delay, 0s);
     will-change: transform, opacity;
-    opacity: 0.8;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+    opacity: 0.9;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.2)) hue-rotate(var(--hue, 0deg));
   }
-  .heart::before,
-  .heart::after{
-    content:"";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 30% 30%, #ffe1ef 0 40%, #f98aa6 60%, #f43f5e 100%);
-    border-radius: 50%;
-  }
-  .heart::before{ top: -50%; left: 0; }
-  .heart::after{ top: 0; left: 50%; }
-  .heart{ background: radial-gradient(circle at 70% 70%, #ffe1ef 0 40%, #f98aa6 60%, #f43f5e 100%); border-radius: 6px; }
 
   @keyframes rise{
-    0%{ transform: translateY(10vh) translateX(0) rotate(-45deg) scale(var(--scale,1)); opacity: 0; }
-    8%{ opacity: .8; }
-    50%{ transform: translateY(-40vh) translateX(var(--drift, 15px)) rotate(-35deg) scale(var(--scale,1)); }
-    100%{ transform: translateY(-120vh) translateX(calc(var(--drift, 15px) * -1)) rotate(-25deg) scale(var(--scale,1)); opacity: 0; }
+    0%{ transform: translateY(10vh) translateX(0) rotate(-25deg) scale(var(--scale,1)); opacity: 0; }
+    8%{ opacity: .9; }
+    50%{ transform: translateY(-40vh) translateX(var(--drift, 15px)) rotate(-15deg) scale(var(--scale,1)); }
+    100%{ transform: translateY(-120vh) translateX(calc(var(--drift, 15px) * -1)) rotate(-5deg) scale(var(--scale,1)); opacity: 0; }
   }
 
   /* Next arrow button (SVG) */
@@ -497,10 +485,6 @@
   }
   .toast.show{ display: inline-block; }
 
-  /* Focus ring for all buttons */
-  button{ font: inherit; }
-  button:focus-visible{ outline: none; box-shadow: var(--focus); }
-
   /* Utility muted text on dark bg */
   #s3 .muted{ color: #d7c7cf; opacity: .85; }
 
@@ -511,6 +495,25 @@
 </style>
 </head>
 <body>
+
+<!-- Global SVG defs for vector hearts (symbol + gradient) -->
+<svg width="0" height="0" style="position:absolute; overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Reusable heart path -->
+    <symbol id="heartSymbol" viewBox="0 0 32 29.6">
+      <!-- Clássico coração suave -->
+      <path d="M23.6,0c-3.1,0-5.7,2.1-7.6,4.8C14.1,2.1,11.5,0,8.4,0C3.7,0,0,3.7,0,8.4C0,17.6,16,29.6,16,29.6
+               S32,17.6,32,8.4C32,3.7,28.3,0,23.6,0z"/>
+    </symbol>
+
+    <!-- Romantic gradient fill for hearts -->
+    <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe1ef"/>
+      <stop offset="45%" stop-color="#f98aa6"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <!-- Background audio (usuário deve substituir o caminho se desejar) -->
 <!-- Troque o arquivo de música aqui: ./musica.mp3 -->
@@ -551,7 +554,7 @@
 
   <div class="content">
     <h2>Nossas lembranças</h2>
-    <p>Deslize e reviva alguns dos nossos momentos favoritos.</p>
+    <p>Deslize para o lado e reviva alguns dos nossos momentos favoritos.</p>
 
     <div class="carousel-wrap" aria-roledescription="carrossel" aria-label="Fotos do casal">
       <button class="nav-btn nav-prev" aria-label="Foto anterior">
@@ -602,7 +605,7 @@
 
   <div class="content">
     <h2>Nosso universo</h2>
-    <p class="muted">Cada volta ao redor do sol carrega nossas histórias. Veja quanto tempo já vivemos desde 15/03/2019 o dia em que nos casamos. Mesmo tendo uma história desde 2017 .</p>
+    <p class="muted">Cada volta ao redor do sol carrega nossas histórias. Veja quanto tempo já vivemos desde 15/03/2019. Mas, nos relacionamos a mais de 8 anos, desde 2017.</p>
 
     <div class="solar" aria-hidden="true">
       <div class="sun"></div>
@@ -632,7 +635,7 @@
 
   <div class="content">
     <h2>Debaixo da mesma lua</h2>
-    <p>Na noite de 15/03/2019, como estava a lua? Veja a fase e um pequeno retrato dela.</p>
+    <p>Na noite em que nos casamos 15/03/2019, como estava a lua? Veja a fase e um pequeno retrato dela.</p>
 
     <div class="earth-moon" aria-hidden="true">
       <div class="earth-4"></div>
@@ -696,6 +699,7 @@
     <button class="close-x" id="noClose" aria-label="Fechar">✕</button>
     <h2>Obrigado por visitar</h2>
     <p>Mesmo que nossas estrelas sigam em caminhos diferentes, sou grato por este momento.</p>
+    <!-- Edite o link abaixo para o seu redirecionamento -->
     <a id="laterLink" class="btn btn-ghost later-link" href="#" target="_blank" rel="noopener">Saber mais</a>
   </div>
 </div>
@@ -719,26 +723,38 @@
     });
   }
 
-  /* Hearts overlay generator (lightweight, per section) */
+  /* Hearts overlay generator using SVG elements */
+  const SVG_NS = 'http://www.w3.org/2000/svg';
   function createHearts(container, count=12){
-    // Limit hearts per section for performance
     const n = Math.min(Math.max(count, 6), 15);
     for(let i=0; i<n; i++){
-      const h = document.createElement('span');
-      h.className = 'heart';
-      const left = Math.random()*100;
-      const size = 10 + Math.random()*16;  // 10-26px
-      const scale = 0.8 + Math.random()*0.9;
-      const dur = 9 + Math.random()*12;    // 9-21s
-      const delay = -Math.random()*dur;    // negative for stagger
-      const drift = (Math.random()<.5?-1:1) * (8 + Math.random()*18) + 'px';
-      h.style.setProperty('--left', left+'%');
-      h.style.setProperty('--size', size+'px');
-      h.style.setProperty('--scale', scale.toFixed(2));
-      h.style.setProperty('--dur', dur+'s');
-      h.style.setProperty('--delay', delay+'s');
-      h.style.setProperty('--drift', drift);
-      container.appendChild(h);
+      const left = (Math.random()*100).toFixed(2) + '%';
+      const size = (10 + Math.random()*16).toFixed(1) + 'px'; // 10-26px
+      const scale = (0.8 + Math.random()*0.9).toFixed(2);
+      const dur = (9 + Math.random()*12).toFixed(2) + 's';    // 9-21s
+      const delay = (-Math.random()*(parseFloat(dur))).toFixed(2) + 's'; // negative for stagger
+      const drift = ((Math.random()<.5?-1:1) * (8 + Math.random()*18)).toFixed(1) + 'px';
+      const hue = (Math.random()*30 - 15).toFixed(1) + 'deg'; // subtle -15..+15
+
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('class', 'heart');
+      svg.setAttribute('viewBox', '0 0 32 29.6');
+      svg.style.setProperty('--left', left);
+      svg.style.setProperty('--size', size);
+      svg.style.setProperty('--scale', scale);
+      svg.style.setProperty('--dur', dur);
+      svg.style.setProperty('--delay', delay);
+      svg.style.setProperty('--drift', drift);
+      svg.style.setProperty('--hue', hue);
+
+      const use = document.createElementNS(SVG_NS, 'use');
+      // Prefer href (SVG2), fallback xlink:href for older Safari
+      use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#heartSymbol');
+      use.setAttribute('href', '#heartSymbol');
+      use.setAttribute('fill', 'url(#heartGrad)');
+
+      svg.appendChild(use);
+      container.appendChild(svg);
     }
   }
 
@@ -779,12 +795,9 @@
   }
 
   function setupAudio(){
-    // Try autoplay on DOM ready
     if(audio){
-      // iOS sometimes requires user gesture; still attempt
       tryPlay();
     }
-    // Toggle button
     audioToggle.addEventListener('click', async ()=>{
       if(audio.paused){
         await audio.play().catch(()=>{});
@@ -826,8 +839,8 @@
     });
 
     function activeIndex(){
-      const w = track.getBoundingClientRect().width * 0.85; // grid-auto-columns
-      const idx = Math.round(track.scrollLeft / (track.clientWidth*0.85 + 12)); // approx with gap
+      const slideWidth = slides[0].getBoundingClientRect().width + 12; // gap
+      const idx = Math.round(track.scrollLeft / slideWidth);
       return Math.min(Math.max(idx, 0), slides.length-1);
     }
 
@@ -976,11 +989,11 @@
     const target = new Date(2019, 2, 15, 21, 0, 0); // local
     const synodic = 29.530588853; // days
 
-    const ageDays = ((target.getTime() - epoch.getTime())/86400000) % synodic;
+    const raw = (target.getTime() - epoch.getTime())/86400000;
+    const ageDays = raw % synodic;
     const age = ageDays < 0 ? ageDays + synodic : ageDays;
     const k = age / synodic; // 0..1
 
-    // Phase name (8 phases)
     function phaseName(frac){
       const idx = Math.round(frac*8) % 8;
       switch(idx){
@@ -996,7 +1009,6 @@
       }
     }
 
-    // Draw moon using two-arc method (approximation)
     function drawMoon(){
       ctx.clearRect(0,0,w,h);
 
@@ -1012,7 +1024,7 @@
       ctx.arc(0,0,R,0,Math.PI*2);
       ctx.fill();
 
-      // Lit area
+      // Lit area (approximation with two arcs)
       const phi = 2*Math.PI*k;
       const waxing = k < 0.5;
       const m = Math.abs(Math.cos(phi)); // 1 on new, 0 on full
@@ -1059,7 +1071,7 @@
     const dt = new Date(d);
     const day = dt.getDate();
     dt.setMonth(dt.getMonth()+months);
-    // If rolled over to next month, set to last day of previous month
+    // Se rolou para o próximo mês, voltar para o último dia do mês anterior
     if(dt.getDate() < day){
       dt.setDate(0);
     }
@@ -1134,7 +1146,7 @@
     btnNo.addEventListener('click', ()=>{
       noOverlay.classList.add('active');
       laterLink.classList.remove('show');
-      // After 10s show link (user can edit href="#" below)
+      // Após 10s, mostrar link (usuário pode editar href="#" abaixo)
       setTimeout(()=>{ laterLink.classList.add('show'); }, 10000);
     });
     noClose.addEventListener('click', ()=> noOverlay.classList.remove('active'));
@@ -1162,7 +1174,7 @@
   - Substitua as imagens do carrossel em ./fotos/1.jpg, ./fotos/2.jpg, ... (Seção 2).
   - Edite o link do botão após "Não" no atributo href="#" do elemento #laterLink (Seção overlay).
   - Troque o arquivo de música no elemento <audio id="bgAudio" src="./musica.mp3">.
-  - Todas as setas são SVGs. Cada seção tem corações animados de forma leve e performática.
+  - Todas as setas são SVGs. Cada seção tem corações SVG animados (sem pseudo-elementos).
   - O cronômetro da Seção 3 calcula anos/meses/dias/horas/min/seg com matemática de calendário.
   - A fase lunar (Seção 4) usa ciclo sinódico com época 2000-01-06 18:14 UTC e retrato aproximado com canvas.
   - A "nova página" do SIM é a seção #simView e persiste o objetivo no localStorage até expirar.
